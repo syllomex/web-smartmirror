@@ -1,4 +1,5 @@
 import CitySelector, { Coordinates } from "@/components/CitySelector";
+import Clock from "@/components/Clock";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
@@ -9,7 +10,9 @@ const getWeather = async (lat?: number, lon?: number) => {
   const defaultLon = -47.4451;
 
   return (
-    await fetch(`/api/getWeather?lat=${lat || defaultLat}&lon=${lon || defaultLon}`)
+    await fetch(
+      `/api/getWeather?lat=${lat || defaultLat}&lon=${lon || defaultLon}`
+    )
   ).json();
 };
 
@@ -21,8 +24,7 @@ const Home: NextPage = () => {
     () => getWeather(coords?.lat, coords?.lon),
     {
       initialData: null,
-      refetchInterval: 60000,
-      enabled: !!coords,
+      refetchInterval: 300000,
     }
   );
 
@@ -34,13 +36,9 @@ const Home: NextPage = () => {
         <title>Smart Mirror</title>
       </Head>
 
-      <h1>Smart Mirror</h1>
-
-      <CitySelector onSelect={setCoords} />
-
-      {JSON.stringify(coords)}
-
-      {JSON.stringify(data)}
+      <div className="container">
+        <Clock temperature={data?.main.temp} />
+      </div>
     </div>
   );
 };
