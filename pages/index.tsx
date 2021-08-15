@@ -1,17 +1,24 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const [coords, setCoords] = useState<GeolocationCoordinates | null>(null);
+  const [coords, setCoords] = useState<GeolocationCoordinates | null>();
+  const [error, setError] = useState<GeolocationPositionError>();
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setCoords(position.coords);
-    });
-  }, [])
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCoords(position.coords);
+      },
+      (error) => {
+        console.log(error);
+        setError(error);
+      }
+    );
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -23,11 +30,15 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-        Latitude: {coords?.latitude || 'Carregando'}<br />Longitude: {coords?.longitude || 'Carregando'}
+          Latitude: {coords?.latitude || "Carregando"}
+          <br />
+          Longitude: {coords?.longitude || "Carregando"}
         </h1>
 
+        {error && <h1 className={styles.title}>{error.message}</h1>}
+
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.js</code>
         </p>
 
@@ -68,14 +79,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
