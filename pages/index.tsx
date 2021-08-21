@@ -37,7 +37,7 @@ const Home: NextPage = () => {
       </Head>
 
       <div className="container">
-        <Clock temperature={data?.main.temp} />
+        <Clock temperature={data?.main.temp} direction="row" />
       </div>
     </div>
   );

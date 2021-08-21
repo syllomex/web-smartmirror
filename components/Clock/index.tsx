@@ -8,6 +8,7 @@ import { capitalize } from "@/utils";
 
 type Props = {
   temperature?: number;
+  direction?: "row" | "column";
 };
 
 const options: { weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6; locale: Locale } = {
@@ -28,7 +29,7 @@ function getDateTime() {
   };
 }
 
-export default function Clock({ temperature }: Props) {
+export default function Clock({ temperature, direction = "column" }: Props) {
   const [dateTime, setDateTime] = useState<{ time: string; date: string }>(
     getDateTime()
   );
@@ -41,9 +42,15 @@ export default function Clock({ temperature }: Props) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.contentContainer}>
-        <span className={styles.time}>{dateTime.time}</span>
-        <span className={styles.date}>{dateTime.date}</span>
+      <div
+        className={
+          direction === "column" ? styles.contentContainer : styles.rowContainer
+        }
+      >
+        <div className={direction === "column" ? styles.dateTimeContainer : styles.dateTimeContainerRow}>
+          <span className={styles.time}>{dateTime.time}</span>
+          <span className={styles.date}>{dateTime.date}</span>
+        </div>
         {temperature !== undefined && (
           <span className={styles.temp}>{Math.round(temperature)}ºC</span>
         )}

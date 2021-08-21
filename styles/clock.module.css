@@ -9,6 +9,26 @@
   align-items: center;
 }
 
+.rowContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dateTimeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dateTimeContainerRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .time {
   font-size: 14rem;
 }
