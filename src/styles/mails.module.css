@@ -1,0 +1,62 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2.8rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 55rem;
+
+  margin-top: 5.4rem;
+}
+
+.title {
+  font-size: 3.6rem;
+  margin-bottom: 1.6rem;
+}
+
+.mailContainer {
+  flex: 1;
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-bottom: 1.6rem;
+}
+
+.unread {
+  opacity: 0.5;
+}
+
+.mailData {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 80%;
+}
+
+.subject {
+  font-weight: bold;
+  font-size: 3.6rem;
+  flex: 1;
+
+  text-overflow: ellipsis;
+}
+
+.from {
+  font-size: 2.4rem;
+  flex: 1;
+}
+
+.time {
+  font-size: 2.4rem;
+  margin-left: 1.6rem;
+  margin-top: 1rem;
+}
+
+.read {
+  opacity: 0.5;
+}
