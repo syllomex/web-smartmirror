@@ -1,4 +1,4 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
   render() {
@@ -11,7 +11,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
           />
-          <meta name="description" content="Smart mirror display." />
+          <meta name="description" content="Smart mirror display" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>
