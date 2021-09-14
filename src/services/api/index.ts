@@ -5,7 +5,7 @@ const env = process.env.NODE_ENV;
 const baseURL =
   env === 'development'
     ? 'http://192.168.0.104:8000'
-    : 'https://smart-mirror-one.vercel.app/api';
+    : 'https://api-smartmirror.herokuapp.com';
 
 const api = axios.create({ baseURL });
 
