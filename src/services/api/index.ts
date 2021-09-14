@@ -7,7 +7,13 @@ const baseURL =
     ? 'http://192.168.0.104:8000'
     : 'https://api-smartmirror.herokuapp.com';
 
-const api = axios.create({ baseURL });
+const api = axios.create({
+  baseURL,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+  },
+});
 
 export default api;
 
