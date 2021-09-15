@@ -9,6 +9,9 @@ const baseURL =
 
 const api = axios.create({
   baseURL,
+  headers: {
+    'Access-Control-Allow-Origin': 'https://smartmirror-display.vercel.app',
+  },
 });
 
 export default api;
