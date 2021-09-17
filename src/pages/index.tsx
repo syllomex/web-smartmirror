@@ -9,6 +9,7 @@ import { useRouter } from 'next/dist/client/router';
 
 type Props = {
   code: number;
+  hash?: string;
 };
 
 const DURATION_SECONDS = 120;
@@ -17,7 +18,7 @@ const getRandomCode = () => {
   return `${Math.random() * 999999 + 100000}`.substr(0, 6);
 };
 
-const Landing: NextPage<Props> = ({ code: _code }) => {
+const Landing: NextPage<Props> = ({ code: _code, hash }) => {
   const { push } = useRouter();
 
   const [code, setCode] = useState<string>(`${_code}`);
@@ -28,6 +29,12 @@ const Landing: NextPage<Props> = ({ code: _code }) => {
   const createMirror = useCallback(async () => {
     const result = await api.post('mirrors', { code });
     setData(result.data.data);
+
+    const ctx = undefined;
+    const name = 'smart-mirror.mirror-hash';
+    const value = result.data.data.hash;
+
+    nookies.set(ctx, name, value);
   }, [code]);
 
   const getMirror = useCallback(

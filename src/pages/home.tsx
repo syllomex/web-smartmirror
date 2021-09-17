@@ -3,8 +3,9 @@ import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import nookies from 'nookies';
 import Mails from '@/components/Mails';
+import CheckConnection from '@/components/CheckConnection';
 
-const Home: NextPage<{ user?: any }> = ({ user }) => {
+const Home: NextPage<{ user?: any; hash?: string }> = ({ user, hash }) => {
   return (
     <div>
       <Head>
@@ -14,6 +15,7 @@ const Home: NextPage<{ user?: any }> = ({ user }) => {
       <div className="container">
         <Clock temperature={20} direction="column" />
         <Mails user={user} />
+        <CheckConnection hash={hash} />
       </div>
     </div>
   );
@@ -21,14 +23,16 @@ const Home: NextPage<{ user?: any }> = ({ user }) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = nookies.get(ctx);
+
   const user = cookies['smart-mirror.user'];
+  const hash = cookies['smart-mirror.mirror-hash'];
 
   if (!user)
     return {
       redirect: { destination: '/', permanent: false },
     };
 
-  return { props: { user: JSON.parse(user) } };
+  return { props: { user: JSON.parse(user), hash } };
 };
 
 export default Home;
