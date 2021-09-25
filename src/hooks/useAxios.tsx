@@ -29,6 +29,8 @@ const useAxios = <T extends unknown, P extends unknown>(options: {
 
         setFetched(true);
 
+        console.log('fetching');
+
         const response = await api.request({
           url: options.path,
           method: options.method || 'GET',

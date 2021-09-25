@@ -37,7 +37,12 @@
   font-size: 3.6rem;
 }
 
+.tempContainer {
+  margin-top: 4rem;
+  display: flex;
+  align-items: center;
+}
+
 .temp {
   font-size: 7.2rem;
-  margin-top: 4rem;
 }

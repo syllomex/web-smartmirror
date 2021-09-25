@@ -5,10 +5,11 @@ import { ptBR } from 'date-fns/locale';
 
 import styles from '@/styles/clock.module.css';
 import { capitalize } from '@/utils';
+import useAxios from '@/hooks/useAxios';
 
 type Props = {
-  temperature?: number;
   direction?: 'row' | 'column';
+  user?: any;
 };
 
 const options: { weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6; locale: Locale } = {
@@ -29,7 +30,17 @@ function getDateTime() {
   };
 }
 
-export default function Clock({ temperature, direction = 'column' }: Props) {
+export default function Clock({ user, direction = 'column' }: Props) {
+  const { data, loading, refetch, error } = useAxios<
+    { temperature: number; icon: string; description: string },
+    { googleId: string }
+  >({
+    method: 'get',
+    path: 'weather',
+    skip: !user?.googleId,
+    params: { googleId: user?.googleId },
+  });
+
   const [dateTime, setDateTime] = useState<{ time: string; date: string }>(
     getDateTime()
   );
@@ -57,9 +68,16 @@ export default function Clock({ temperature, direction = 'column' }: Props) {
           <span className={styles.time}>{dateTime.time}</span>
           <span className={styles.date}>{dateTime.date}</span>
         </div>
-        {temperature !== undefined && (
-          <span className={styles.temp}>{Math.round(temperature)}ºC</span>
-        )}
+
+        <div className={styles.tempContainer}>
+          <img src={data?.icon} alt="Ícone de clima" />
+
+          {data?.temperature !== undefined && (
+            <span className={styles.temp}>
+              {Math.round(data?.temperature)}ºC
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
