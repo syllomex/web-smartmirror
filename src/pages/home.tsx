@@ -13,9 +13,12 @@ const Home: NextPage<{ user?: any; hash?: string }> = ({ user, hash }) => {
       </Head>
 
       <div className="container">
-        <Clock user={user} direction="column" />
-        <Mails user={user} />
-        <CheckConnection hash={hash} />
+        <Clock user={user} direction="row" />
+
+        <div className="bottomContainer">
+          <Mails user={user} />
+          <CheckConnection hash={hash} />
+        </div>
       </div>
     </div>
   );
