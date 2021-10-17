@@ -8,7 +8,7 @@ type SocketContextT = {
 
 const SocketContext = React.createContext({} as SocketContextT);
 
-const URI = process.env.SOCKET_URI || 'http://localhost:8000';
+const URI = process.env.NEXT_PUBLIC_API_URL_LOCAL as string;
 
 const createClient = () => client(URI);
 

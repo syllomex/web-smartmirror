@@ -4,14 +4,11 @@ const env = process.env.NODE_ENV;
 
 const baseURL =
   env === 'development'
-    ? 'http://192.168.0.105:8000'
-    : 'https://api-smartmirror.herokuapp.com';
+    ? process.env.NEXT_PUBLIC_API_URL_LOCAL
+    : process.env.NEXT_PUBLIC_API_URL_PUBLIC;
 
 const api = axios.create({
   baseURL,
-  headers: {
-    'Access-Control-Allow-Origin': 'https://smartmirror-display.vercel.app',
-  },
 });
 
 export default api;
