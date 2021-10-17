@@ -1,3 +1,4 @@
+import { useWidget } from '@/contexts/widget';
 import useAxios from '@/hooks/useAxios';
 import { GetMailsResult, GetMailsVars } from '@/services/api/types';
 
@@ -21,18 +22,21 @@ const parseAndDisplay = (date?: string) => {
 };
 
 export default function Mails({ user }: { user: any }) {
-  const { data, loading, error, refetch } = useAxios<
-    GetMailsResult,
-    GetMailsVars
-  >({
+  const { isWidgetEnabled } = useWidget();
+
+  const enabled = isWidgetEnabled('gmail');
+
+  const { data } = useAxios<GetMailsResult, GetMailsVars>({
     path: '/mails',
     params: {
       'google-access-token': user.googleAccessToken,
       'google-refresh-token': user.googleRefreshToken,
     },
-    skip: !user,
+    skip: !user || !enabled,
     refetchInterval: 300,
   });
+
+  if (!enabled) return null;
 
   return (
     <div className={styles.wrapper}>

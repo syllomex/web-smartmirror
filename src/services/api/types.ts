@@ -23,3 +23,21 @@ export type GetMailsResult = {
   subject: string;
   unread: boolean;
 }[];
+
+export type GetCalendarsVars = {
+  'google-refresh-token': string;
+};
+
+export type GetCalendarsResult = {
+  summary: string;
+  start: {
+    dateTime?: string;
+    timeZone?: string;
+    date?: string;
+  };
+  end: {
+    dateTime?: string;
+    timeZone?: string;
+    date?: string;
+  };
+}[];

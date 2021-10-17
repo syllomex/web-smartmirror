@@ -1,11 +1,12 @@
 import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import nookies from 'nookies';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/dist/client/router';
 
 import styles from '@/styles/landing.module.css';
 import api from '@/services/api';
-import { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'next/dist/client/router';
+import { useSocket } from '@/services/socket';
 
 type Props = {
   code: number;
@@ -18,8 +19,9 @@ const getRandomCode = () => {
   return `${Math.random() * 999999 + 100000}`.substr(0, 6);
 };
 
-const Landing: NextPage<Props> = ({ code: _code, hash }) => {
+const Landing: NextPage<Props> = ({ code: _code }) => {
   const { push } = useRouter();
+  const { io } = useSocket();
 
   const [code, setCode] = useState<string>(`${_code}`);
   const [data, setData] = useState<any>();
@@ -34,7 +36,7 @@ const Landing: NextPage<Props> = ({ code: _code, hash }) => {
     const name = 'smart-mirror.mirror-hash';
     const value = result.data.data.hash;
 
-    nookies.set(ctx, name, value);
+    nookies.set(ctx, name, value, { maxAge: 180 * 24 * 60 * 60 });
   }, [code]);
 
   const getMirror = useCallback(
@@ -55,10 +57,24 @@ const Landing: NextPage<Props> = ({ code: _code, hash }) => {
   );
 
   useEffect(() => {
+    io.on(`from-server.connect:${code}`, (args) => {
+      if (!args || !args.user) return;
+
+      const ctx = undefined;
+      const name = 'smart-mirror.user';
+      const value = JSON.stringify(args.user);
+
+      nookies.set(ctx, name, value, { maxAge: 180 * 24 * 60 * 60 });
+
+      push('/home');
+    });
+  }, [code, io, push]);
+
+  useEffect(() => {
     if (!data?.hash) return;
 
     const interval = setInterval(() => {
-      getMirror(data.hash);
+      // getMirror(data.hash);
     }, 5000);
 
     return () => clearInterval(interval);

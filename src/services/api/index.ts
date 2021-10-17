@@ -4,7 +4,7 @@ const env = process.env.NODE_ENV;
 
 const baseURL =
   env === 'development'
-    ? 'http://192.168.0.104:8000'
+    ? 'http://192.168.0.105:8000'
     : 'https://api-smartmirror.herokuapp.com';
 
 const api = axios.create({

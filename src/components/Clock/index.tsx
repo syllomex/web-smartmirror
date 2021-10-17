@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-
+import Image from 'next/image';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 import styles from '@/styles/clock.module.css';
 import { capitalize } from '@/utils';
 import useAxios from '@/hooks/useAxios';
+import { useWidget } from '@/contexts/widget';
 
 type Props = {
   direction?: 'row' | 'column';
@@ -31,13 +32,16 @@ function getDateTime() {
 }
 
 export default function Clock({ user, direction = 'column' }: Props) {
-  const { data, loading, refetch, error } = useAxios<
+  const { isWidgetEnabled } = useWidget();
+  const weatherEnabled = isWidgetEnabled('weather');
+
+  const { data } = useAxios<
     { temperature: number; icon: string; description: string },
     { googleId: string }
   >({
     method: 'get',
     path: 'weather',
-    skip: !user?.googleId,
+    skip: !user?.googleId || !weatherEnabled,
     params: { googleId: user?.googleId },
   });
 
@@ -69,15 +73,24 @@ export default function Clock({ user, direction = 'column' }: Props) {
           <span className={styles.date}>{dateTime.date}</span>
         </div>
 
-        <div className={styles.tempContainer}>
-          <img src={data?.icon} alt="Ícone de clima" />
+        {weatherEnabled && (
+          <div className={styles.tempContainer}>
+            {!!data?.icon && (
+              <Image
+                src={data?.icon}
+                alt="Ícone de clima"
+                height={100}
+                width={100}
+              />
+            )}
 
-          {data?.temperature !== undefined && (
-            <span className={styles.temp}>
-              {Math.round(data?.temperature)}ºC
-            </span>
-          )}
-        </div>
+            {data?.temperature !== undefined && (
+              <span className={styles.temp}>
+                {Math.round(data?.temperature)}ºC
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
