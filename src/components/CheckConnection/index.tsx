@@ -1,25 +1,34 @@
-import useAxios from '@/hooks/useAxios';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
 
+import { useSocket } from '@/services/socket';
+
 export default function CheckConnection({ hash }: { hash?: string }) {
   const { push } = useRouter();
-
-  const { data } = useAxios<{ connected?: boolean }, undefined>({
-    path: 'mirrors/isConnected',
-    params: { hash },
-    skip: !hash,
-    refetchInterval: 5,
-  });
+  const { io } = useSocket();
 
   useEffect(() => {
-    if (data?.connected === false) {
-      nookies.destroy(undefined, 'smart-mirror.user');
-      nookies.destroy(undefined, 'smart-mirror.mirror-hash');
+    const event = `from-server.disconnect:${hash}`;
+
+    const listener = () => {
+      nookies.destroy(null, 'smart-mirror.mirror-hash');
+      nookies.destroy(null, 'smart-mirror.user');
       push('/');
-    }
-  }, [data, push]);
+    };
+
+    io.on(event, listener);
+
+    return () => {
+      io.off(event, listener);
+    };
+  }, [io, push, hash]);
+
+  useEffect(() => {
+    const event = `from-web.check-connection`;
+
+    io.emit(event, { hash });
+  }, [io, hash]);
 
   return null;
 }
