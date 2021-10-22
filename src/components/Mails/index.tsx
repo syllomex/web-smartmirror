@@ -53,6 +53,12 @@ export default function Mails({ user }: { user: any }) {
               {plural(['nova mensagem', 'novas mensagens'], data.length)}
             </span>
 
+            {data.length === 0 && (
+              <span className={styles.from}>
+                Nenhum e-mail na caixa de entrada!
+              </span>
+            )}
+
             {data.map((mail, index) => (
               <div
                 className={`${styles.mailContainer} ${
