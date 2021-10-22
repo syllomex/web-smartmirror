@@ -12,7 +12,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
           <meta name="description" content="Smart mirror display" />
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/favicon.png" />
         </Head>
         <body>
           <Main />
