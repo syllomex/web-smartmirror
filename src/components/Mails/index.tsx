@@ -33,7 +33,7 @@ export default function Mails({ user }: { user: any }) {
       'google-refresh-token': user.googleRefreshToken,
     },
     skip: !user || !enabled,
-    refetchInterval: 300,
+    refetchInterval: 60,
   });
 
   if (!enabled) return null;

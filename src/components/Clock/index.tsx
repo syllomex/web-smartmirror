@@ -43,7 +43,7 @@ export default function Clock({ user, direction = 'column' }: Props) {
     path: 'weather',
     skip: !user?.googleId || !weatherEnabled,
     params: { googleId: user?.googleId },
-    refetchInterval: 300,
+    refetchInterval: 60,
   });
 
   const [dateTime, setDateTime] = useState<{ time: string; date: string }>(
