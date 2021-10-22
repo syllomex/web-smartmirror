@@ -48,6 +48,9 @@ export default function Agenda({ user }: { user: any }) {
             Não foi possível carregar os emails.
           </span>
         )}
+        {data && data.length === 0 && (
+          <span className={styles.from}>Nenhum compromisso na sua agenda!</span>
+        )}
         {data &&
           data.map((event, index) => (
             <div key={index.toString()} className={styles.eventContainer}>
